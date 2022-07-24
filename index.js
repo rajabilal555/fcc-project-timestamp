@@ -28,15 +28,21 @@ app.get("/api/:date_string?", function (req, res) {
 	var date = new Date();
 	if (dateParam) {
 		if (!isNaN(dateParam)) {
-			date = new Date(dateParam * 1000);
+			date = new Date(parseInt(dateParam));
 		} else {
 			date = new Date(dateParam);
 		}
 	}
-	res.json({
-		unix: date.getTime(),
-		utc: date.toUTCString(),
-	});
+	if (date.getTime() == null) {
+		res.json({
+			error: "Invalid Date",
+		});
+	} else {
+		res.json({
+			unix: date.getTime(),
+			utc: date.toUTCString(),
+		});
+	}
 });
 
 // listen for requests :)
